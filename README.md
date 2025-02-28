@@ -12,7 +12,7 @@
 
     <!-- Video Player -->
     <video width="80%" controls>
-        <source src="assets/VillageScenerio.mp4" type="video/mp4">
+        <source src="assets/VillageScenerio.mp4" type="VillageScenerio.mp4">
         Your browser does not support the video tag.
     </video>
 
