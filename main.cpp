@@ -1,16 +1,3 @@
-/*
- * GLUT Shapes Demo
- *
- * Written by Nigel Stewart November 2003
- *
- * This program is test harness for the sphere, cone
- * and torus shapes in GLUT.
- *
- * Spinning wireframe and smooth shaded shapes are
- * displayed until the ESC or q key is pressed.  The
- * number of geometry stacks and slices can be adjusted
- * using the + and - keys.
- */
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -26,9 +13,9 @@ float PI = 3.14157;
 struct Color {
     float r, g, b;
 };
-float manX = -0.4f; // Initial X position of the man
-float manY = -1.0f; // Initial Y position of the man
-bool isMoving = true; // Flag to stop animation when the man reaches the destination
+float manX = -0.4f;
+float manY = -1.0f;
+bool isMoving = true;
 void drawCircle(float x, float y, float radius) {
     glBegin(GL_POLYGON);
     for (int i = 0; i < 360; i++) {
@@ -56,41 +43,28 @@ void drawCloud(float x, float y) {
 float dx=0.6f;
 void boat4() {
     float dy = 0.6f; // Offset to move boat to (1.0, 0.7)
-
     glBegin(GL_POLYGON);
     glColor3ub(0, 0, 0);
-    glVertex2f(0.3f + dx, -0.25f + dy);
-    glVertex2f(0.35f + dx, -0.3f + dy);
-    glVertex2f(0.65f + dx, -0.3f + dy);
-    glVertex2f(0.7f + dx, -0.25f + dy);
+    glVertex2f(0.3f + dx, -0.25f + dy);glVertex2f(0.35f + dx, -0.3f + dy);
+    glVertex2f(0.65f + dx, -0.3f + dy);glVertex2f(0.7f + dx, -0.25f + dy);
     glEnd();
-
     glBegin(GL_POLYGON);
     glColor3ub(255, 153, 0);
-    glVertex2f(0.37f + dx, -0.25f + dy);
-    glVertex2f(0.39f + dx, -0.17f + dy);
-    glVertex2f(0.412f + dx, -0.13f + dy);
-    glVertex2f(0.63f + dx, -0.13f + dy);
-    glVertex2f(0.64f + dx, -0.16f + dy);
-    glVertex2f(0.65f + dx, -0.25f + dy);
+    glVertex2f(0.37f + dx, -0.25f + dy);glVertex2f(0.39f + dx, -0.17f + dy);
+    glVertex2f(0.412f + dx, -0.13f + dy);glVertex2f(0.63f + dx, -0.13f + dy);
+    glVertex2f(0.64f + dx, -0.16f + dy);glVertex2f(0.65f + dx, -0.25f + dy);
     glEnd();
-
     glBegin(GL_POLYGON);
     glColor3ub(255, 25, 25);
-    glVertex2f(0.462f + dx, -0.08f + dy);
-    glVertex2f(0.462f + dx, 0.08f + dy);
-    glVertex2f(0.465f + dx, 0.1f + dy);
-    glVertex2f(0.564f + dx, 0.08f + dy);
-    glVertex2f(0.565f + dx, 0.06f + dy);
-    glVertex2f(0.565f + dx, -0.1f + dy);
+    glVertex2f(0.462f + dx, -0.08f + dy);glVertex2f(0.462f + dx, 0.08f + dy);
+    glVertex2f(0.465f + dx, 0.1f + dy);glVertex2f(0.564f + dx, 0.08f + dy);
+    glVertex2f(0.565f + dx, 0.06f + dy);glVertex2f(0.565f + dx, -0.1f + dy);
     glEnd();
 
     glBegin(GL_POLYGON);
     glColor3ub(136, 204, 0);
-    glVertex2f(0.5f + dx, -0.13f + dy);
-    glVertex2f(0.5f + dx, 0.14f + dy);
-    glVertex2f(0.51f + dx, 0.14f + dy);
-    glVertex2f(0.51f + dx, -0.13f + dy);
+    glVertex2f(0.5f + dx, -0.13f + dy);glVertex2f(0.5f + dx, 0.14f + dy);
+    glVertex2f(0.51f + dx, 0.14f + dy);glVertex2f(0.51f + dx, -0.13f + dy);
     glEnd();
 }
 void boat2() {
@@ -361,7 +335,16 @@ void tree(GLfloat xpos, GLfloat ypos){
     }
     glEnd();
 }
-void drawWave() {
+void drawWave(float amplitude, float frequency, float phaseShift, float verticalOffset) {
+    glBegin(GL_LINE_STRIP);
+    glColor3f(0.0f, 0.5f, 1.0f);
+    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
+        float y = amplitude * sin(frequency * (x + waveOffset) + phaseShift) + verticalOffset;
+        glVertex2f(x, y);
+    }
+    glEnd();
+}
+void drawWave2() {
     glBegin(GL_LINE_STRIP);
     glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
 
@@ -372,95 +355,14 @@ void drawWave() {
     }
     glEnd();
 }
-void drawWave2() {
+void drawWave3() {
     glBegin(GL_LINE_STRIP);
     glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
 
 
     // Loop through points to create the wave
     for (float x = -0.0f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(10.0f * (x + waveOffset)) - 0.15f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave3() {
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(10.0f * (x + waveOffset)) + 0.3f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave4(){
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(9.0f * (x + waveOffset)) + 0.35f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave5(){
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(7.0f * (x + waveOffset)) + 0.39f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave6(){
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(5.0f * (x + waveOffset)) + 0.21f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave7(){
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(8.0f * (x + waveOffset)) + 0.15f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave8(){
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(8.0f * (x + waveOffset)) + 0.5f;  // Moved the wave further down
-        glVertex2f(x, y);  // Set the vertex for the wave
-    }
-    glEnd();
-}
-void drawWave9(){
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0.0f, 0.5f, 1.0f); // Soft ocean blue
-
-    // Loop through points to create the wave
-    for (float x = -1.5f; x <= 1.5f; x += 0.05f) {
-        float y = 0.05f * sin(7.0f * (x + waveOffset)) + 0.55f;  // Moved the wave further down
+        float y = 0.03f * sin(10.0f * (x + waveOffset)) - 0.15f;  // Moved the wave further down
         glVertex2f(x, y);  // Set the vertex for the wave
     }
     glEnd();
@@ -537,7 +439,6 @@ void sun(){
         }
     glEnd();
 }
-
 void drawRiver(){
     glColor3f(0.44f, 0.63f, 0.75f);
     glBegin(GL_POLYGON);
@@ -598,23 +499,14 @@ void drawSquaresWithGaps(float offsetx) {
     }
 }
 void drawMan(float xPos, float yPos) {
-    glPushMatrix();
-    glTranslatef(xPos, yPos, 0.0f);
-    glScalef(0.8f, 0.8f, 1.0f); // Scale down slightly
-
-    if (yPos >= 0.2f && yPos <= 0.6) {
-        doorOpen = true;
-    } else {
-        doorOpen = false;
-    }
-
-    // Head (Smaller)
+    glPushMatrix();glTranslatef(xPos, yPos, 0.0f);
+    glScalef(0.8f, 0.8f, 1.0f);
+    if (yPos>=0.2f && yPos<=0.6){doorOpen = true;}
+    else{doorOpen = false;}
     glColor3f(1.0f, 0.8f, 0.6f);
-    float cx = 0.031f, cy = -0.56f, radius = 0.032f; // Reduced radius
+    float cx=0.031f,cy=-0.56f,radius = 0.032f;
     int num_segments = 100;
-
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(cx, cy);
+    glBegin(GL_TRIANGLE_FAN);glVertex2f(cx, cy);
     for (int i = 0; i <= num_segments; i++) {
         float angle = 2.0f * M_PI * i / num_segments;
         float x = cx + radius * cos(angle);
@@ -622,34 +514,21 @@ void drawMan(float xPos, float yPos) {
         glVertex2f(x, y);
     }
     glEnd();
-
-    // Hands (Scaled Down)
     glColor3f(0.0f, 0.0f, 0.0f);
     glBegin(GL_LINES);
-    glVertex2f(-0.001f, -0.63f);
-    glVertex2f(-0.04f, -0.72f); // Shorter hands
-    glVertex2f(0.06f, -0.63f);
-    glVertex2f(0.1f, -0.72f);
+        glVertex2f(-0.001f, -0.63f);glVertex2f(-0.04f, -0.72f);
+        glVertex2f(0.06f, -0.63f);glVertex2f(0.1f, -0.72f);
     glEnd();
-
-    // Body (Smaller)
     glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_QUADS);
-    glVertex2f(-0.001f, -0.6f);
-    glVertex2f(0.06f, -0.6f); // Slightly narrower body
-    glVertex2f(0.06f, -0.72f);
-    glVertex2f(-0.001f, -0.72f);
+    glVertex2f(-0.001f, -0.6f);glVertex2f(0.06f, -0.6f);
+        glVertex2f(0.06f, -0.72f);glVertex2f(-0.001f, -0.72f);
     glEnd();
-
-    // Legs (Shorter)
     glColor3f(0.0f, 0.0f, 0.0f);
     glBegin(GL_LINES);
-    glVertex2f(0.03f, -0.72f);
-    glVertex2f(-0.01f, -0.85f);
-    glVertex2f(0.03f, -0.72f);
-    glVertex2f(0.08f, -0.85f);
+        glVertex2f(0.03f, -0.72f);glVertex2f(-0.01f, -0.85f);
+        glVertex2f(0.03f, -0.72f);glVertex2f(0.08f, -0.85f);
     glEnd();
-
     glPopMatrix();
 }
 
@@ -1006,14 +885,15 @@ void display(){
 
     drawRiver();
     // Roof
-    drawWave2();
-    drawWave3();
-    drawWave4();
-    drawWave5();
-    drawWave6();
-    drawWave7();
-    drawWave8();
-    drawWave9();
+
+    drawWave(0.05f, 10.0f, 0.0f, 0.3f);
+    drawWave(0.05f, 9.0f, 0.0f, 0.35f);
+    drawWave(0.05f, 7.0f, 0.0f, 0.39f);
+    drawWave(0.05f, 5.0f, 0.0f, 0.21f);
+    drawWave(0.05f, 8.0f, 0.0f, 0.15f);
+    drawWave(0.05f, 8.0f, 0.0f, 0.5f);
+    drawWave(0.05f, 7.0f, 0.0f, 0.55f);
+
     boat2();
     boat4();
     glColor3f(0.506f, 0.502f, 0.427f);
@@ -1032,6 +912,7 @@ void display(){
         glVertex2f(0.5f + offsetX, 0.7f);
         glVertex2f(-0.5f + offsetX, 0.7f);
     glEnd();
+
 
     rightWindowTop(offsetX);
     centerWindowTop(offsetX);
@@ -1055,12 +936,13 @@ void display(){
 
     glColor3f(1.0f, 1.0f, 1.0f);
     drawText("Premier University, Chittagong", -0.37f + offsetX, 0.78f);
-    drawWave();
 
+    drawWave3();
     stair(offsetX);
     road(offsetX);
-
     // Down floor
+    drawWave2();
+
     drawMan(manX + offsetX, manY);
 
     glColor3f(0.667f, 0.522f, 0.271f);
@@ -1102,9 +984,7 @@ void display(){
     //drawTree(0.0f, -0.5f, 0.3f, 0.15f);  // Draw a tree at (0.0, -0.5) with trunk height 0.3 and canopy size 0.15
     tree(-0.5f, 0.0f);
     sun();
-
     drawCloud(0.0f, 1.5f);
-
     glFlush();
 }
 
